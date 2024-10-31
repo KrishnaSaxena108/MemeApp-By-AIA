@@ -1,6 +1,6 @@
 # Meme Submission DApp
 
-This decentralized application (DApp) allows users to submit and vote on memes. Built with Solidity for the smart contract backend and HTML, CSS, and JavaScript for the frontend, this DApp connects to the blockchain using MetaMask and ethers.js.
+This decentralized application (DApp) allows users to submit and vote on memes. Built with Solidity for the smart contract backend and HTML, CSS, and JavaScript for the frontend, this DApp connects to the blockchain using MetaMask.
 
 ## Features
 
@@ -11,7 +11,6 @@ This decentralized application (DApp) allows users to submit and vote on memes. 
 ## Tech Stack
 
 - **Solidity**: Smart contract development
-- **Ethers.js**: Blockchain interaction via JavaScript
 - **MetaMask**: Wallet connection for transactions
 - **HTML/CSS/JavaScript**: Frontend
 
@@ -25,8 +24,7 @@ This decentralized application (DApp) allows users to submit and vote on memes. 
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/MemeSubmissionDApp.git
-cd MemeSubmissionDApp
+git clone https://github.com/KrishnaSaxena108/MemeApp-By-AIA.git
 ```
 
 ### Deploy the Smart Contract
