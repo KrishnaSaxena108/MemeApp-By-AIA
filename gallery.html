@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeMingle Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="logo.png" alt="MemeMingle Logo" class="logo">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+            </ul>
+            <button id="connectWallet" class="btn-connect">Connect Wallet</button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Meme Gallery</h1>
+            <div id="memeGallery" class="meme-gallery"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 MemeMingle. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

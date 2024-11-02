@@ -3,265 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meme Submission</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #4CAF50, #45a049);
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            background: #fff;
-            padding: 25px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            width: 350px;
-            transition: transform 0.3s ease;
-        }
-
-        .container:hover {
-            transform: translateY(-5px);
-        }
-
-        h1 {
-            color: #4CAF50;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        input {
-            width: 90%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        button {
-            padding: 12px;
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 15px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #message, #contractInfo {
-            margin-top: 15px;
-            font-size: 16px;
-            color: #333;
-        }
-    </style>
+    <title>MemeMingle</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Submit Your Meme</h1>
-        <input type="text" id="memeUrl" placeholder="Enter Meme URL" required>
-        <input type="text" id="memeDescription" placeholder="Enter Meme Description" required>
-        <button id="submitMeme" disabled>Submit Meme</button>
-        <div id="message"></div>
-        <div id="contractInfo"></div>
-    </div>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="logo.png" alt="MemeMingle Logo">
+                <span>MemeMingle</span>
+            </div>
+            <button id="connectWallet">Connect Wallet</button>
+        </nav>
+    </header>
 
-    <script>
-        const ethersUrls = [
-            'https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js',
-            'https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js',
-            'https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js'
-        ];
+    <main>
+        <div class="container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="submit">Submit Meme</button>
+                <button class="tab-btn" data-tab="gallery">Meme Gallery</button>
+            </div>
 
-        function loadEthers(index = 0) {
-            if (index >= ethersUrls.length) {
-                console.error('Failed to load Ethers library from all sources');
-                document.getElementById('message').innerText = 'Failed to load Ethers library. Please check your internet connection and refresh the page.';
-                return;
-            }
+            <div id="submitMeme" class="tab-content active">
+                <h1>Submit Your Meme</h1>
+                <input type="text" id="memeUrl" placeholder="Enter Meme URL" required>
+                <input type="text" id="memeDescription" placeholder="Enter Meme Description" required>
+                <button id="submitMemeBtn">Submit Meme</button>
+                <div id="message"></div>
+            </div>
 
-            const script = document.createElement('script');
-            script.src = ethersUrls[index];
-            script.onload = initializeApp;
-            script.onerror = () => loadEthers(index + 1);
-            document.body.appendChild(script);
-        }
+            <div id="memeGallery" class="tab-content">
+                <h1>Meme Gallery</h1>
+                <div id="memeList"></div>
+            </div>
+        </div>
+    </main>
 
-        function initializeApp() {
-            const contractAddress = '0xdd5745b67ede89ffb57ee86915a3822977f77705'; 
-            const abi =  [
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "index",
-                    "type": "uint256"
-                }
-            ],
-            "name": "getMeme",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                },
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "getTotalMemes",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "memes",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "url",
-                    "type": "string"
-                },
-                {
-                    "internalType": "address",
-                    "name": "creator",
-                    "type": "address"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "votes",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_url",
-                    "type": "string"
-                }
-            ],
-            "name": "uploadMeme",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "memeIndex",
-                    "type": "uint256"
-                }
-            ],
-            "name": "voteMeme",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        }
-    ];
-            async function checkContractABI() {
-                if (typeof window.ethereum === 'undefined') {
-                    document.getElementById('contractInfo').innerText = "Please install MetaMask to check contract info.";
-                    return;
-                }
+    <footer>
+        <p>&copy; 2023 MemeMingle. All rights reserved.</p>
+    </footer>
 
-                try {
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    const provider = new ethers.providers.Web3Provider(window.ethereum);
-                    const contract = new ethers.Contract(contractAddress, abi, provider);
-
-                    const uploadMemeABI = contract.interface.getFunction('uploadMeme');
-                    document.getElementById('contractInfo').innerText = `uploadMeme function expects ${uploadMemeABI.inputs.length} parameter(s): ${uploadMemeABI.inputs.map(input => input.type).join(', ')}`;
-                } catch (error) {
-                    console.error("Error checking contract ABI:", error);
-                    document.getElementById('contractInfo').innerText = "Error checking contract ABI: " + error.message;
-                }
-            }
-
-            async function submitMeme() {
-                const memeUrl = document.getElementById("memeUrl").value;
-                const memeDescription = document.getElementById("memeDescription").value;
-                const messageDiv = document.getElementById("message");
-
-                if (!memeUrl || !memeDescription) {
-                    messageDiv.innerText = "Please enter both URL and description.";
-                    return;
-                }
-
-                if (typeof window.ethereum === 'undefined') {
-                    messageDiv.innerText = "Please install MetaMask!";
-                    console.error("MetaMask not detected");
-                    return;
-                }
-
-                try {
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    const provider = new ethers.providers.Web3Provider(window.ethereum);
-                    const signer = provider.getSigner();
-                    const contract = new ethers.Contract(contractAddress, abi, signer);
-
-                    messageDiv.innerText = "Submitting meme...";
-                    const tx = await contract.uploadMeme(memeUrl, memeDescription);
-                    await tx.wait();
-                    messageDiv.innerText = "Meme submitted successfully!";
-                    document.getElementById("memeUrl").value = '';
-                    document.getElementById("memeDescription").value = '';
-                } catch (error) {
-                    console.error("Error details:", error);
-                    messageDiv.innerText = "Submission failed: " + error.message;
-                }
-            }
-
-            document.getElementById("submitMeme").addEventListener("click", submitMeme);
-            document.getElementById("submitMeme").disabled = false;
-            checkContractABI();
-            console.log("App initialized successfully");
-        }
-
-        loadEthers();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
